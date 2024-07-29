@@ -21,25 +21,28 @@ double flowRate;    //This is the value we intend to calculate.
 volatile int count; //This integer needs to be set as volatile to ensure it updates correctly during the interrupt process.
 
 void setup() {
-/* 
-1. Plug-in machine
-2. LCD: "Booting" 
-3. Weight Sensor: Set Default "EMPTY" value
-4. Ultrasonic Sensor: Set Default "EMPTY" value
-5. Flow Rate Sensor: Set Default "EMPTY" value
-6. Webserver: Load
-
-
+/* 1. Boot Sequence
+LCD / BUZZER: "Checking Devices" *Chime: Post Beep
+LCD / BUZZER: "Ensure Dispenser platform is empty" *Chime: Confirmation Beep
+LCD / BUZZER: "Calibrating..." *Chime: Post Beep
+WEIGHT: Set Default "EMPTY" value
+ULTRASONIC: Set Default "EMPTY" value
+FLOW: Set Counter to '0'
+LCD / BUZZER: "Checking Pumps..." *Chime: Post Beep
+RELAY: 
+PUMP[]: 
+LCD / Buzzer: "Loading Webserver" *Chime: Post Beep
+WEBSERVER: LOAD
+LCD / BUZZER: "READY" *Chime: Boot Complete - Ready
 */
 }
 
 
 void loop() {
-/*
-1. Wait for Connection
-WEBSERVER:
+/* 1. Wait for Connection
+WEBSERVER: Waiting for connection
 LCD: QR Barcode to connect
-BUZZER:
+BUZZER: 
 WEIGHT:
 ULTRASONIC:
 RELAY:
@@ -47,8 +50,18 @@ PUMP[]:
 FLOW:
 */
 
-/*
-2.Connection Established
+/* 2.Connection Established
+WEBSERVER: Connect to %USER%
+LCD: Show Connection to %USER%
+BUZZER: Beep on connect
+WEIGHT: check for change from default
+ULTRASONIC:
+RELAY:
+PUMP[]:
+FLOW:
+*/
+
+/* 3.User Selects Beverage
 WEBSERVER:
 LCD:
 BUZZER:
@@ -59,8 +72,7 @@ PUMP[]:
 FLOW:
 */
 
-/*
-3.User Selects Beverage
+/* 3.Create Beverage
 WEBSERVER:
 LCD:
 BUZZER:
@@ -71,20 +83,7 @@ PUMP[]:
 FLOW:
 */
 
-/*
-3.Create Beverage
-WEBSERVER:
-LCD:
-BUZZER:
-WEIGHT:
-ULTRASONIC:
-RELAY:
-PUMP[]:
-FLOW:
-*/
-
-/*
-3.Reset
+/* 3.Reset
 WEBSERVER:
 LCD:
 BUZZER:
