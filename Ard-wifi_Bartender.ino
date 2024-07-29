@@ -1,24 +1,74 @@
 //  Libraries 
 
+#include <Wire.h> // Include Wire library for I2C
+
 // Devices
 // 0. Webserver
-// 1. LCD 
-const LCD = pin;
-// 2. Buzzer
-const passiveBuzzer = 12 ;
-// 3. Weight Sensor
-const weight_clk = 9;
-const weight_dat = 8;
-// 4. UltraSonic Sensor
-const ultraSonicTrig = 11;
-const ultraSonicEcho = 10;
-// 5. Relay
-const powerRelay = pin;
-const pump[] = [];
-// 6. Flow rate Sensor
-int flowPin = 13;    //This is the input pin on the Arduino
-double flowRate;    //This is the value we intend to calculate.
-volatile int count; //This integer needs to be set as volatile to ensure it updates correctly during the interrupt process.
+
+// 1. EL-SM-008 LCD 
+int lcd_sck = 7;
+int lcd_sda = 6;
+
+// 2. COM-07950 Passive Buzzer
+int buzzer = 12;
+
+// 3. HX711_Load_Cell
+int load_clk = 9;
+int load_dat = 8;
+
+// 4. HC_SR04_UltraSonic Sensor
+int sonic_trig = 11;
+int sonic_echo = 10;
+
+// 5. 16CH Relay (Using I2C relay board)
+const int relay_address = 0x20; // Example I2C address for relay board
+
+// 6. yf-s401-flow-sensor
+int flow_pin = 13;    // This is the input pin on the Arduino
+double flow_rate;     // This is the value we intend to calculate
+volatile int flow_count; // This integer needs to be set as volatile to ensure it updates correctly during the interrupt process
+
+void setup() {
+  // Initialize I2C for LCD and Relay
+  Wire.begin(); // Join I2C bus
+
+  // Initialize the LCD
+  pinMode(lcd_sck, OUTPUT);
+  pinMode(lcd_sda, OUTPUT);
+
+  // Initialize the buzzer
+  pinMode(buzzer, OUTPUT);
+
+  // Initialize the load cell
+  pinMode(load_clk, OUTPUT);
+  pinMode(load_dat, INPUT);
+
+  // Initialize the ultrasonic sensor
+  pinMode(sonic_trig, OUTPUT);
+  pinMode(sonic_echo, INPUT);
+
+  // Initialize the relays via I2C
+  Wire.beginTransmission(relay_address);
+  // Set up the relay board as needed
+  Wire.endTransmission();
+
+  // Initialize the flow sensor
+  pinMode(flow_pin, INPUT);
+  attachInterrupt(digitalPinToInterrupt(flow_pin), flowSensorISR, RISING); // Interrupt on rising edge
+  flow_count = 0;
+
+  // Begin Serial Communication for debugging
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Add code to handle the devices
+}
+
+// Interrupt Service Routine for flow sensor
+void flowSensorISR() {
+  flow_count++;
+}
 
 void setup() {
 /* 1. Boot Sequence
@@ -40,14 +90,8 @@ LCD / BUZZER: "READY" *Chime: Boot Complete - Ready
 
 void loop() {
 /* 1. Wait for Connection
-WEBSERVER: Waiting for connection
 LCD: QR Barcode to connect
-BUZZER: 
-WEIGHT:
-ULTRASONIC:
-RELAY:
-PUMP[]:
-FLOW:
+WEBSERVER: Waiting for connection
 */
 
 /* 2.Connection Established
