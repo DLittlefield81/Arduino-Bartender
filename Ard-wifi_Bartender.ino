@@ -37,9 +37,8 @@ volatile int flow_count; // This integer needs to be set as volatile to ensure i
 
 void setup() {
   // Start Webserver 
-
     Serial.begin(9600);      // initialize serial communication
-  pinMode(led, OUTPUT);      // set the LED pin mode
+
 // check for the WiFi module:
   if (WiFi.status() == WL_NO_MODULE) {
     Serial.println("Communication with WiFi module failed!");
@@ -160,54 +159,50 @@ void flowSensorISR() {
 void flowSensorISR() {
   
 }
-/* 1. Standby
-LCD: QR Barcode to connect
-WEBSERVER: Waiting for connection
+
+/*
+Notes:
+Frontend: React
+Backend: Express / SQL
 */
 
-/* 2. User Connected
-WEBSERVER: Connect to %USER%
-LCD: Show Connection to %USER%
-BUZZER: Beep on connect
-WEIGHT: check for change from default
-ULTRASONIC:
-RELAY:
-PUMP[]:
-FLOW:
+
+
+
+
+/* TODO: 1. Standby
+(LCD.print(QR.IPaddress / hostname))
 */
 
-/* 3.Beverave List
-WEBSERVER:
-LCD:
-BUZZER:
-WEIGHT:
-ULTRASONIC:
-RELAY:
-PUMP[]:
-FLOW:
+/* TODO: 2. User Connected
+If (user.firstTime) == (Request User.register)
+(registeredUser)
+(LCD.print("Welcome " + registeredUser.name);)
+(buzzer.beep();)
+(LCD.print("Please place a cup"))
+(cupSize)==(load.value) && (sonic.value)
+(LCD.print(Show Cup Icon : Shot || Drink)) 
+(buzzer.beep(2);)
+(RegisteredUser.web.drinkList[filtered:cupSize].select)
+(LCD.print("Pouring " + SelectedDrink.name);)
+
+
 */
 
-/* 3.Pour Beverage
-WEBSERVER:
-LCD:
-BUZZER:
-WEIGHT:
-ULTRASONIC:
-RELAY:
-PUMP[]:
-FLOW:
+/* TODO: Database Info
+cupDB = index | cupSize: Shot || Drink | loadcell.value | sonic.value
+drinDB = index | drinkName | ingredients | steps | flowRate.value | mL
+*/
+/* TODO: Error Types
+Bottle.Empty = Pump[]==HIGH && flow==0
+Cup Removed: loadCell==0 && sonic>threshold
+No Cup: loadCell==0 && sonic>threshold
+Spill Detected: flow>threshold
+
+
 */
 
-/* 3.Reset
-WEBSERVER:
-LCD:
-BUZZER:
-WEIGHT:
-ULTRASONIC:
-RELAY:
-PUMP[]:
-FLOW:
-*/
+
 
 void printWifiStatus() {
   // print the SSID of the network you're attached to:
