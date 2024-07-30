@@ -16,21 +16,21 @@ WiFiServer server(80);
 int lcd_sck = 7;
 int lcd_sda = 6;
 
-// 2. COM-07950 passive buzzer
+// 2. COM-07950 Passive Buzzer
 int buzzer = 12;
 
-// 3. HX711 load_cell
+// 3. HX711_Load_Cell
 int load_clk = 9;
 int load_dat = 8;
 
-// 4. HC_SR04 ultraSonic sensor
+// 4. HC_SR04_UltraSonic Sensor
 int sonic_trig = 11;
 int sonic_echo = 10;
 
 // 5. 16CH Relay (Using I2C relay board)
 const int relay_address = 0x20; // Example I2C address for relay board
 
-// 6. YF-S401 flow sensor
+// 6. yf-s401-flow-sensor
 int flow_pin = 13;    // This is the input pin on the Arduino
 double flow_rate;     // This is the value we intend to calculate
 volatile int flow_count; // This integer needs to be set as volatile to ensure it updates correctly during the interrupt process
@@ -100,55 +100,7 @@ void setup() {
 }
 
 void loop() {
-  WiFiClient client = server.available();   // listen for incoming clients
-//  TODO:  Refactor code 
-  if (client) {                             // if you get a client,
-    Serial.println("new client");           // print a message out the serial port
-    String currentLine = "";                // make a String to hold incoming data from the client
-    while (client.connected()) {            // loop while the client's connected
-      if (client.available()) {             // if there's bytes to read from the client,
-        char c = client.read();             // read a byte, then
-        Serial.write(c);                    // print it out to the serial monitor
-        if (c == '\n') {                    // if the byte is a newline character
-
-          // if the current line is blank, you got two newline characters in a row.
-          // that's the end of the client HTTP request, so send a response:
-          if (currentLine.length() == 0) {
-            // HTTP headers always start with a response code (e.g. HTTP/1.1 200 OK)
-            // and a content-type so the client knows what's coming, then a blank line:
-            client.println("HTTP/1.1 200 OK");
-            client.println("Content-type:text/html");
-            client.println();
-
-            // the content of the HTTP response follows the header:
-            client.print("<p style=\"font-size:7vw;\">Click <a href=\"/H\">here</a> turn the LED on<br></p>");
-            client.print("<p style=\"font-size:7vw;\">Click <a href=\"/L\">here</a> turn the LED off<br></p>");
-            
-            // The HTTP response ends with another blank line:
-            client.println();
-            // break out of the while loop:
-            break;
-          } else {    // if you got a newline, then clear currentLine:
-            currentLine = "";
-          }
-        } else if (c != '\r') {  // if you got anything else but a carriage return character,
-          currentLine += c;      // add it to the end of the currentLine
-        }
-
-        // Check to see if the client request was "GET /H" or "GET /L":
-        if (currentLine.endsWith("GET /H")) {
-          digitalWrite(LED_BUILTIN, HIGH);               // GET /H turns the LED on
-        }
-        if (currentLine.endsWith("GET /L")) {
-          digitalWrite(LED_BUILTIN, LOW);                // GET /L turns the LED off
-        }
-      }
-      
-    }
-    // close the connection:
-    client.stop();
-    Serial.println("client disconnected");
-  }
+  // Add code to handle the devices
 }
 
 // Interrupt Service Routine for flow sensor
@@ -157,9 +109,7 @@ void flowSensorISR() {
 }
 
 
-void flowSensorISR() {
-  
-}
+
 /* 1. Standby
 LCD: QR Barcode to connect
 WEBSERVER: Waiting for connection
@@ -208,23 +158,3 @@ RELAY:
 PUMP[]:
 FLOW:
 */
-
-void printWifiStatus() {
-  // print the SSID of the network you're attached to:
-  Serial.print("SSID: ");
-  Serial.println(WiFi.SSID());
-
-  // print your board's IP address:
-  IPAddress ip = WiFi.localIP();
-  Serial.print("IP Address: ");
-  Serial.println(ip);
-
-  // print the received signal strength:
-  long rssi = WiFi.RSSI();
-  Serial.print("signal strength (RSSI):");
-  Serial.print(rssi);
-  Serial.println(" dBm");
-  // print where to go in a browser:
-  Serial.print("To see this page in action, open a browser to http://");
-  Serial.println(ip);
-}
