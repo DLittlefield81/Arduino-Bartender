@@ -13,22 +13,24 @@ WiFiServer server(80);
 
 
 // 1. EL-SM-008 LCD 
-int lcd_sck = 7;
+int lcd_scl = 7;
 int lcd_sda = 6;
 
 // 2. COM-07950 passive buzzer
 int buzzer = 12;
 
 // 3. HX711 load_cell
-int load_clk = 9;
-int load_dat = 8;
+int load_sck = 9;
+int load_dt = 8;
 
 // 4. HC_SR04 ultraSonic sensor
 int sonic_trig = 11;
 int sonic_echo = 10;
 
-// 5. 16CH Relay (Using I2C relay board)
-const int relay_address = 0x20; // Example I2C address for relay board
+// 5. 16CH Relay
+int relay_int = 5;
+int relay_scl = 4;
+int relay_sda = 3;
 
 // 6. YF-S401 flow sensor
 int flow_pin = 13;    // This is the input pin on the Arduino
